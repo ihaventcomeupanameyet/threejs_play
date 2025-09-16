@@ -16,7 +16,7 @@ export default function PlayGround(){
             1000 );
 
         camera.position.z = 5
-        const renderer = new THREE.WebGLRenderer({canvas:CANVAS.current});
+        const renderer = new THREE.WebGLRenderer({canvas:CANVAS.current ?? undefined});
         renderer.setSize(window.innerWidth,window.innerHeight);
         renderer.setPixelRatio(window.devicePixelRatio);
 

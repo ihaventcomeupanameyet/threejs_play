@@ -1,13 +1,13 @@
 'use client'
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
-import Geometries from "three/src/renderers/common/Geometries";
+
 import {Float32BufferAttribute} from "three";
 
 
 
 export default function ThreeScene() {
-    const canvasRef = useRef<HTMLCanvasElement|undefined>(undefined);
+    const canvasRef = useRef<HTMLCanvasElement|null>(null);
 
     useEffect(() => {
         if (!canvasRef.current) return;
@@ -85,7 +85,6 @@ export default function ThreeScene() {
     }
   `,
             transparent: true,
-            sizeAttenuation: true,
         });
 
 
@@ -100,8 +99,8 @@ export default function ThreeScene() {
 
         scene.add(parts);
 
-        let march_points = null;
-        let roam_points = null;
+        let march_points:THREE.Points|null = null;
+        let roam_points:THREE.Points|null = null;
         let marching = false;
         function march(){
             if (marching) return;
@@ -152,19 +151,20 @@ export default function ThreeScene() {
 
         function morphing(){
             const position_geo = geometry.attributes.position;
-            const position = march_points.geometry.attributes.position;
+            if (march_points) {
+                const position = march_points.geometry.attributes.position;
+                const tempSource = new THREE.Vector3();
+                const tempTarget = new THREE.Vector3();
+                for (let i = 0; i < position_geo.count; i++){
+                    tempSource.fromBufferAttribute(position,i);
+                    tempTarget.fromBufferAttribute(position_geo,i);
 
-            const tempSource = new THREE.Vector3();
-            const tempTarget = new THREE.Vector3();
-            for (let i = 0; i < position_geo.count; i++){
-                tempSource.fromBufferAttribute(position,i);
-                tempTarget.fromBufferAttribute(position_geo,i);
+                    tempSource.lerp(tempTarget,0.05);
 
-                tempSource.lerp(tempTarget,0.05);
-
-                position.setXYZ(i, tempSource.x, tempSource.y, tempSource.z);
+                    position.setXYZ(i, tempSource.x, tempSource.y, tempSource.z);
+                }
+                position.needsUpdate = true;
             }
-            position.needsUpdate = true;
         }
         function create(){
             const position = geometry.attributes.position;
@@ -228,7 +228,9 @@ export default function ThreeScene() {
 
             if (marching) {
                 morphing();
-                roam_points.rotation.y += 0.001;
+                if (roam_points) {
+                    roam_points.rotation.y += 0.001;
+                }
             } else {
                 parts.rotation.y += 0.001;
             }
