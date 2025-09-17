@@ -15,7 +15,7 @@ export default function ThreeScene() {
         // init scene/camera
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(
-            75,
+            30,
             window.innerWidth / window.innerHeight,
             0.1,
             1000
@@ -30,9 +30,17 @@ export default function ThreeScene() {
         renderer.setPixelRatio(window.devicePixelRatio);
 
         // add cube
-        const geometry = new THREE.SphereGeometry(2);
+        const geometry = new THREE.SphereGeometry(0.75);
+        geometry.applyMatrix4(new THREE.Matrix4().makeTranslation(-1, -0.35, 0));
         const material1 = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
         const cube = new THREE.Mesh(geometry, material1);
+
+        //cube.position.set(-2, -2, 0);
+
+
+        // Need To apply the matrix to the position!
+        //cube.position.x += 2;
+        //cube.position.y -=2;
         //scene.add(cube);
 
         const position = geometry.attributes.position;
@@ -59,8 +67,8 @@ export default function ThreeScene() {
         let temp = new Float32Array(part_count*3);
 
         for (let i = 0; i < temp.length*3;i++){
-            temp[i] = (Math.random()-0.5) * 10;
-            temp[i+1] = (Math.random()-0.5) * 10;
+            temp[i] = (Math.random()-0.5) * 5;
+            temp[i+1] = (Math.random()-0.5) * 5;
             temp[i+2] = (Math.random()-0.5) * 2.5;
         }
 
@@ -200,9 +208,9 @@ export default function ThreeScene() {
             const y = 1 - ((2*evt.y)/window.innerHeight);
 
             const angleX = x * Math.PI * 0.1; // left/right (±45°)
-            const angleY = y * Math.PI * 0.1; // up/down (±45°)
+            const angleY = y * Math.PI * 0.05; // up/down (±45°)
 
-            const theta = x * Math.PI * 0.1;
+            const theta = x * Math.PI * 0.05;
             const phi = y * Math.PI * 0.1;
 
             //camera.position.x = radius * Math.sin(angleX);

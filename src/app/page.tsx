@@ -8,6 +8,5 @@ const scene = new THREE.Scene();
 export default function Home() {
   return (
       <ThreeScene></ThreeScene>
-      //<PlayGround></PlayGround>
   );
 }
