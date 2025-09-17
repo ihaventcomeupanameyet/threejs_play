@@ -207,8 +207,8 @@ export default function ThreeScene() {
             const x = 1 - ((2*evt.x)/window.innerWidth);
             const y = 1 - ((2*evt.y)/window.innerHeight);
 
-            const angleX = x * Math.PI * 0.1; // left/right (±45°)
-            const angleY = y * Math.PI * 0.05; // up/down (±45°)
+            const angleX = x * Math.PI * 0.1;
+            const angleY = y * Math.PI * 0.05;
 
             const theta = x * Math.PI * 0.05;
             const phi = y * Math.PI * 0.1;
@@ -254,5 +254,5 @@ export default function ThreeScene() {
         };
     }, []);
 
-    return (<canvas ref={canvasRef}></canvas>);  // 👈 you return the <canvas>, not the renderer
+    return (<canvas ref={canvasRef}></canvas>);
 }
